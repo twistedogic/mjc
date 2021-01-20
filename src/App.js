@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "react-toastify/dist/ReactToastify.css";
+import { Router } from "@reach/router";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles, lightTheme } from "./style";
+import Home from "./components/Home";
+import New from "./components/New";
+import View from "./components/View";
+import { storage } from "./util/store";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => (
+  <ThemeProvider theme={lightTheme}>
+    <GlobalStyles />
+    <Router>
+      <Home path="/" store={storage} />
+      <New path="/new" store={storage} />
+      <View path="/game/:gameId" store={storage} />
+    </Router>
+    <ToastContainer />
+  </ThemeProvider>
+);
 
 export default App;
