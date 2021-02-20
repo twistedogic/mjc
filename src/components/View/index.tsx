@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "@reach/router";
+import { Link, RouteComponentProps } from "@reach/router";
+import { CenteredBox } from "../Layout";
 import { useGameState } from "../../hooks";
-
-const Grid = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const MenuContainer = styled.div`
   display: flex;
@@ -19,15 +15,20 @@ const Menu = () => (
   </MenuContainer>
 );
 
-const View = ({ store, gameId }) => {
+interface ViewProps extends RouteComponentProps {
+  store: Storage;
+  gameId?: string;
+}
+
+const View = ({ store, gameId }: ViewProps) => {
   const { players, state } = useGameState(store, gameId);
   console.log(players, state);
   return (
-    <Grid>
+    <CenteredBox>
       {players}
       {state}
       <Menu />
-    </Grid>
+    </CenteredBox>
   );
 };
 

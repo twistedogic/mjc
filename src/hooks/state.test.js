@@ -1,5 +1,5 @@
 import { getNewState, calculateState } from "./state";
-import { defaultConfig } from "../constants";
+import { defaultConfig } from "./state.hook";
 
 describe("getNewState", () => {
   const cases = [
@@ -19,7 +19,7 @@ describe("getNewState", () => {
       config: { ...defaultConfig },
       update: { winners: [0], losers: [1, 2, 3], score: 3 },
       state: [100, 100, 100, 100],
-      want: [124, 92, 92, 92],
+      want: [112, 96, 96, 96],
     },
   ];
   it.each(cases)("%j", ({ config, update, state, want }) => {

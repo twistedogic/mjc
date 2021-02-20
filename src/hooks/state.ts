@@ -1,7 +1,12 @@
-import { defaultConfig } from "../constants";
+import { GameConfig, RoundRecord } from "./state.hook";
 import { scoreMode } from "../util/score";
 
-export const getNewState = (config = defaultConfig) => (state, update) => {
+type Updater = (state: Array<number>, update: RoundRecord) => Array<number>;
+
+export const getNewState = (config: GameConfig) => (
+  state: Array<number>,
+  update: RoundRecord
+) => {
   const { mode, maxScore, base, selfDrawnPayRatio } = config;
   const toPayout = scoreMode[mode](base);
   const { winners, losers, score } = update;
@@ -20,10 +25,12 @@ export const getNewState = (config = defaultConfig) => (state, update) => {
   return newState;
 };
 
-export const calculateState = (updater) => (records) =>
+export const calculateState = (updater: Updater) => (
+  records: Array<RoundRecord>
+) =>
   records.reduce(
     (state, record) => {
-      const last = state.length === 0 ? {} : state[state.length - 1];
+      const last = state[state.length - 1];
       const newState = updater(last, record);
       return [...state, newState];
     },

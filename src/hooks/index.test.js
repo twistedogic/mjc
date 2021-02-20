@@ -9,29 +9,46 @@ describe("useIndex", () => {
     act(() => {
       result.current.add("a", "name");
     });
-    expect(result.current.index).toMatchObject({ a: "name" });
+    expect(result.current.index).toMatchObject([{ name: "name", gameId: "a" }]);
     act(() => {
       result.current.delete("a");
     });
-    expect(result.current.index).toMatchObject({});
+    expect(result.current.index).toMatchObject([]);
   });
 
   it("should modify index with initalState", () => {
-    const initalState = { index: JSON.stringify({ b: "other" }) };
+    const initalState = {
+      index: JSON.stringify([{ name: "other", gameId: "b" }]),
+    };
     const store = new mockStore(initalState);
     const { result } = renderHook(() => useIndex(store));
     act(() => {
       result.current.add("a", "name");
     });
-    expect(result.current.index).toMatchObject({ a: "name", b: "other" });
+    expect(result.current.index).toMatchObject([
+      { name: "other", gameId: "b" },
+      { name: "name", gameId: "a" },
+    ]);
     act(() => {
       result.current.delete("b");
     });
-    expect(result.current.index).toMatchObject({ a: "name" });
+    expect(result.current.index).toMatchObject([{ name: "name", gameId: "a" }]);
   });
 });
 
 describe("useGameState", () => {
+  it("should modify game config", () => {
+    const key = "active";
+    const store = new mockStore();
+    const { result } = renderHook(() => useGameState(store, key));
+    const config = {
+      players: ["a", "b", "c", "d"],
+    };
+    act(() => {
+      result.current.setConfig(config);
+    });
+    expect(result.current.players).toMatchObject(config.players);
+  });
   it("should modify game state", () => {
     const key = "active";
     const store = new mockStore();

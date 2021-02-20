@@ -1,4 +1,5 @@
 import "react-toastify/dist/ReactToastify.css";
+import "nes.css/css/nes.min.css";
 import { Router } from "@reach/router";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "styled-components";

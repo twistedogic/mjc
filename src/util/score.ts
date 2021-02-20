@@ -1,6 +1,6 @@
-import { baseScore } from "../constants";
+const baseScore = [1, 2, 4, 8, 16];
 
-export const half = (base) => (score) => {
+export const half = (base: number) => (score: number) => {
   if (score <= 4) {
     return baseScore[score] * base;
   }
@@ -16,11 +16,15 @@ export const half = (base) => (score) => {
   return register[1] * base;
 };
 
-export const ratio = (r) => (base) => (score) => {
+export const ratio = (r: number) => (base: number) => (score: number) => {
   return base * Math.pow(r, score);
 };
 
-export const scoreMode = {
+interface ScoreMode {
+  [index: string]: (base: number) => (score: number) => number;
+}
+
+export const scoreMode: ScoreMode = {
   half,
   double: ratio(2),
 };

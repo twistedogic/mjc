@@ -1,12 +1,13 @@
 export class memStore {
+  state: { [key: string]: any };
   constructor(state = {}) {
     this.state = state;
   }
-  getItem = (key) => this.state[key];
-  setItem = (key, value) => {
+  getItem = (key: string) => this.state[key];
+  setItem = (key: string, value: string) => {
     this.state[key] = value;
   };
-  removeItem = (key) => {
+  removeItem = (key: string) => {
     this.state[key] = null;
   };
 }
