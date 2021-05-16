@@ -1,5 +1,5 @@
 import { useStorageReducer } from "react-storage-hooks";
-import { toast } from "react-toastify";
+import { useNotifications } from "@mantine/notifications";
 import { getNewState, calculateState } from "./state";
 
 export interface GameConfig {
@@ -84,7 +84,11 @@ export const useGameState = (store: Storage, key?: string) => {
     defaultState
   );
   if (err) {
-    toast.error("Fail to access local storage");
+    notifications.showNotification({
+      title: "Storage error",
+      message: "Fail to access local storage",
+      color: "red",
+    });
     console.error(err);
   }
   const setConfig = (config: GameConfig) => {

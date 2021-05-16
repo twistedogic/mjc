@@ -12,4 +12,5 @@ export class memStore {
   };
 }
 
-export const storage = window.localStorage ?? new memStore();
+export const storage =
+  typeof window !== "undefined" ? window.localStorage : new memStore();

@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, RouteComponentProps } from "@reach/router";
-import { CenteredBox } from "../Layout";
+import Link from "next/link";
+import { Button, ElementsGroup, Table } from "@mantine/core";
 import { useIndex } from "../../hooks";
 
 interface ItemProps {
@@ -12,12 +12,12 @@ const Item = ({ id, name }: ItemProps) => {
   const link = `/game/${id}`;
   return (
     <li>
-      <Link to={link}>{name}</Link>
+      <Link href={link}>{name}</Link>
     </li>
   );
 };
 
-interface HomeProps extends RouteComponentProps {
+interface HomeProps {
   store: Storage;
 }
 
@@ -28,10 +28,8 @@ const Home = ({ store }: HomeProps) => {
   ));
   return (
     <CenteredBox>
-        <ul className="nes-list">{items}</ul>
-        <Link className="nes-btn" to={"/new"}>
-          new
-        </Link>
+      <ul className="nes-list">{items}</ul>
+      <Link href={"/new"}>new</Link>
     </CenteredBox>
   );
 };

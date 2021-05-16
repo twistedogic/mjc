@@ -1,11 +1,26 @@
+import ReactDOM from "react-dom";
 import { renderHook, act } from "@testing-library/react-hooks";
+import { NotificationsProvider } from "@mantine/notifications";
 import { useIndex, useGameState } from "./index";
 import { memStore as mockStore } from "../util/store";
 
+const wrapper = ({ children }) => (
+  <NotificationsProvider>{children}</NotificationsProvider>
+);
+
+beforeAll(() => {
+  ReactDOM.createPortal = jest.fn((element, node) => {
+    return element;
+  });
+});
+
+afterEach(() => {
+  ReactDOM.createPortal.mockClear();
+});
 describe("useIndex", () => {
   it("should modify index", () => {
     const store = new mockStore();
-    const { result } = renderHook(() => useIndex(store));
+    const { result } = renderHook(() => useIndex(store), { wrapper });
     act(() => {
       result.current.add("a", "name");
     });
@@ -21,7 +36,7 @@ describe("useIndex", () => {
       index: JSON.stringify([{ name: "other", gameId: "b" }]),
     };
     const store = new mockStore(initalState);
-    const { result } = renderHook(() => useIndex(store));
+    const { result } = renderHook(() => useIndex(store), { wrapper });
     act(() => {
       result.current.add("a", "name");
     });
@@ -40,7 +55,7 @@ describe("useGameState", () => {
   it("should modify game config", () => {
     const key = "active";
     const store = new mockStore();
-    const { result } = renderHook(() => useGameState(store, key));
+    const { result } = renderHook(() => useGameState(store, key), { wrapper });
     const config = {
       players: ["a", "b", "c", "d"],
     };
@@ -52,7 +67,7 @@ describe("useGameState", () => {
   it("should modify game state", () => {
     const key = "active";
     const store = new mockStore();
-    const { result } = renderHook(() => useGameState(store, key));
+    const { result } = renderHook(() => useGameState(store, key), { wrapper });
     act(() => {
       result.current.addRecord({ winners: [1], losers: [0], score: 10 });
       result.current.addRecord({ winners: [2], losers: [3], score: 4 });

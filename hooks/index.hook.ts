@@ -1,5 +1,5 @@
-import { toast } from "react-toastify";
 import { useStorageReducer } from "react-storage-hooks";
+import { useNotifications } from "@mantine/notifications";
 
 type GameIndex = {
   name: string;
@@ -28,6 +28,7 @@ export const indexReducer = (
 };
 
 export const useIndex = (store: Storage) => {
+  const notifications = useNotifications();
   const [index, dispatch, err] = useStorageReducer(
     store,
     "index",
@@ -35,7 +36,11 @@ export const useIndex = (store: Storage) => {
     []
   );
   if (err) {
-    toast.error("Fail to access local storage");
+    notifications.showNotification({
+      title: "Storage error",
+      message: "Fail to access local storage",
+      color: "red",
+    });
     console.error(err);
   }
   return {
